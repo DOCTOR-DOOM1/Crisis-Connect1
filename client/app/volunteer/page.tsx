@@ -43,7 +43,8 @@ export default function VolunteerPage() {
 
     useEffect(() => {
         // Connect to Socket.io
-        socket = io('http://localhost:5000');
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+        socket = io(apiUrl);
 
         socket.on('connect', () => {
             setIsConnected(true);
@@ -58,7 +59,7 @@ export default function VolunteerPage() {
         });
 
         // Fetch initial requests
-        fetch('http://localhost:5000/api/requests')
+        fetch(`${apiUrl}/api/requests`)
             .then(res => res.json())
             .then(data => setRequests(data))
             .catch(err => console.error('Failed to fetch requests', err));
@@ -78,7 +79,8 @@ export default function VolunteerPage() {
 
     const handleClaim = async (id: string) => {
         try {
-            const res = await fetch(`http://localhost:5000/api/requests/${id}/claim`, {
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+            const res = await fetch(`${apiUrl}/api/requests/${id}/claim`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ volunteerId: 'vol-' + Math.random().toString(36).substr(2, 9) })

@@ -246,10 +246,9 @@ router.post('/admin/ngos/:id/verify', async (req, res) => {
             return res.json(ngo);
         }
         return res.json(ngo);
-    }
     } catch (err) {
-    res.status(500).json({ error: err.message });
-}
+        res.status(500).json({ error: err.message });
+    }
 });
 
 // DELETE /api/admin/ngos/:id - Reject/Delete an NGO

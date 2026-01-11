@@ -78,7 +78,7 @@ export default function VictimPage() {
 
     const submitToServer = async (data: any, id?: number) => {
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+            const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '');
             const response = await fetch(`${apiUrl}/api/requests`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

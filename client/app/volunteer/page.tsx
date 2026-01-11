@@ -43,7 +43,7 @@ export default function VolunteerPage() {
 
     useEffect(() => {
         // Connect to Socket.io
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+        const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '');
         socket = io(apiUrl);
 
         socket.on('connect', () => {

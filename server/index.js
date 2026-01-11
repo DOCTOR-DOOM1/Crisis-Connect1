@@ -50,6 +50,11 @@ app.use((req, res, next) => {
     next();
 });
 
+// Health Check
+app.get('/', (req, res) => {
+    res.json({ message: 'Crisis Connect API - Status: Online', mongo: req.isMongoConnected ? 'Connected' : 'Disconnected' });
+});
+
 app.use('/api', apiRoutes);
 
 // Socket.io Connection

@@ -19,7 +19,7 @@ export default function NGORegisterPage() {
         setStatus('Registering...');
 
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+            const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '');
             const res = await fetch(`${apiUrl}/api/ngos/register`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

@@ -19,7 +19,7 @@ export default function AdminDashboard() {
 
     const fetchNgos = async () => {
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+            const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '');
             const res = await fetch(`${apiUrl}/api/admin/ngos`);
             const data = await res.json();
             setNgos(data);
@@ -36,7 +36,7 @@ export default function AdminDashboard() {
 
     const handleVerify = async (id: string) => {
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+            const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '');
             const res = await fetch(`${apiUrl}/api/admin/ngos/${id}/verify`, {
                 method: 'POST'
             });
@@ -51,7 +51,7 @@ export default function AdminDashboard() {
     const handleDecline = async (id: string) => {
         if (!confirm('Are you sure you want to decline and remove this NGO?')) return;
         try {
-            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+            const apiUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000').replace(/\/$/, '');
             const res = await fetch(`${apiUrl}/api/admin/ngos/${id}`, {
                 method: 'DELETE'
             });

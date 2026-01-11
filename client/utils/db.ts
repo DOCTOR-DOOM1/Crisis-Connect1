@@ -12,9 +12,10 @@ interface CrisisDB extends DBSchema {
             urgentNeeds: string[];
             criticalDetails: string;
             timestamp: number;
-            synced: boolean;
+            // synced: 0 (false) | 1 (true)
+            synced: number;
         };
-        indexes: { 'by-synced': boolean };
+        indexes: { 'by-synced': number };
     };
 }
 
@@ -27,7 +28,7 @@ export const initDB = async () => {
             if (!db.objectStoreNames.contains(STORE_NAME)) {
                 const store = db.createObjectStore(STORE_NAME, {
                     keyPath: 'id',
-                    autoIncrement: true,
+                    autoIncrement: true, // Auto-generated ID
                 });
                 store.createIndex('by-synced', 'synced');
             }
@@ -37,12 +38,12 @@ export const initDB = async () => {
 
 export const saveRequestOffline = async (request: any) => {
     const db = await initDB();
-    return db.add(STORE_NAME, { ...request, timestamp: Date.now(), synced: false });
+    return db.add(STORE_NAME, { ...request, timestamp: Date.now(), synced: 0 });
 };
 
 export const getUnsyncedRequests = async () => {
     const db = await initDB();
-    return db.getAllFromIndex(STORE_NAME, 'by-synced', false);
+    return db.getAllFromIndex(STORE_NAME, 'by-synced', 0);
 };
 
 export const markRequestSynced = async (id: number) => {
@@ -51,7 +52,7 @@ export const markRequestSynced = async (id: number) => {
     const store = tx.objectStore(STORE_NAME);
     const request = await store.get(id);
     if (request) {
-        request.synced = true;
+        request.synced = 1;
         await store.put(request);
     }
     await tx.done;

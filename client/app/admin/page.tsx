@@ -7,6 +7,7 @@ interface NGO {
     name: string;
     type: string;
     contactEmail: string;
+    contactPhone: string;
     licenseId: string;
     verified: boolean;
     createdAt: string;
@@ -45,20 +46,21 @@ export default function AdminDashboard() {
         } catch (err) {
             console.error('Verification failed', err);
         }
-        const handleDecline = async (id: string) => {
-            if (!confirm('Are you sure you want to decline and remove this NGO?')) return;
-            try {
-                const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
-                const res = await fetch(`${apiUrl}/api/admin/ngos/${id}`, {
-                    method: 'DELETE'
-                });
-                if (res.ok) {
-                    setNgos(prev => prev.filter(n => n._id !== id));
-                }
-            } catch (err) {
-                console.error('Decline failed', err);
+    };
+
+    const handleDecline = async (id: string) => {
+        if (!confirm('Are you sure you want to decline and remove this NGO?')) return;
+        try {
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000';
+            const res = await fetch(`${apiUrl}/api/admin/ngos/${id}`, {
+                method: 'DELETE'
+            });
+            if (res.ok) {
+                setNgos(prev => prev.filter(n => n._id !== id));
             }
-        };
+        } catch (err) {
+            console.error('Decline failed', err);
+        }
     };
 
     return (
